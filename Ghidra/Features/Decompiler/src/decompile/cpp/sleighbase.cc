@@ -300,6 +300,8 @@ AddrSpace *SleighBase::decodeSlaSpace(Decoder &decoder,const Translate *trans)
     deadcodedelay = delay;	// If deadcodedelay attribute not present, set it to delay
   if (index == 0)
     throw LowlevelError("Expecting index attribute");
+  if (index < 0)
+    throw LowlevelError("Expecting positive index attribute");
   if (elemId == sla::ELEM_SPACE_UNIQUE)
     res = new UniqueSpace(this,trans,index,flags);
   else if (elemId == sla::ELEM_SPACE_OTHER)
