@@ -1913,6 +1913,9 @@ void SubtableSymbol::decode(Decoder &decoder,SleighBase *trans)
       decisiontree = new DecisionNode();
       decisiontree->decode(decoder,(DecisionNode *)0,this);
     }
+    else {
+      throw DecoderError("Unexpected element " + std::to_string(subel));
+    }
     subel = decoder.peekElement();
   }
   pattern = (TokenPattern *)0;
