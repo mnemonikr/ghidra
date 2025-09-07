@@ -202,39 +202,41 @@ void SymbolTable::decodeSymbolHeader(Decoder &decoder)
 
 {				// Put the shell of a symbol in the symbol table
 				// in order to allow recursion
-  SleighSymbol *sym;
+  std::unique_ptr<SleighSymbol> sym;
   uint4 el = decoder.peekElement();
   if (el == sla::ELEM_USEROP_HEAD)
-    sym = new UserOpSymbol();
+    sym = std::make_unique<UserOpSymbol>();
   else if (el == sla::ELEM_EPSILON_SYM_HEAD)
-    sym = new EpsilonSymbol();
+    sym = std::make_unique<EpsilonSymbol>();
   else if (el == sla::ELEM_VALUE_SYM_HEAD)
-    sym = new ValueSymbol();
+    sym = std::make_unique<ValueSymbol>();
   else if (el == sla::ELEM_VALUEMAP_SYM_HEAD)
-    sym = new ValueMapSymbol();
+    sym = std::make_unique<ValueMapSymbol>();
   else if (el == sla::ELEM_NAME_SYM_HEAD)
-    sym = new NameSymbol();
+    sym = std::make_unique<NameSymbol>();
   else if (el == sla::ELEM_VARNODE_SYM_HEAD)
-    sym = new VarnodeSymbol();
+    sym = std::make_unique<VarnodeSymbol>();
   else if (el == sla::ELEM_CONTEXT_SYM_HEAD)
-    sym = new ContextSymbol();
+    sym = std::make_unique<ContextSymbol>();
   else if (el == sla::ELEM_VARLIST_SYM_HEAD)
-    sym = new VarnodeListSymbol();
+    sym = std::make_unique<VarnodeListSymbol>();
   else if (el == sla::ELEM_OPERAND_SYM_HEAD)
-    sym = new OperandSymbol();
+    sym = std::make_unique<OperandSymbol>();
   else if (el == sla::ELEM_START_SYM_HEAD)
-    sym = new StartSymbol();
+    sym = std::make_unique<StartSymbol>();
   else if (el == sla::ELEM_END_SYM_HEAD)
-    sym = new EndSymbol();
+    sym = std::make_unique<EndSymbol>();
   else if (el == sla::ELEM_NEXT2_SYM_HEAD)
-    sym = new Next2Symbol();
+    sym = std::make_unique<Next2Symbol>();
   else if (el == sla::ELEM_SUBTABLE_SYM_HEAD)
-    sym = new SubtableSymbol();
+    sym = std::make_unique<SubtableSymbol>();
   else
     throw SleighError("Bad symbol xml");
+
   sym->decodeHeader(decoder);	// Restore basic elements of symbol
-  symbollist[sym->id] = sym;	// Put the basic symbol in the table
-  table[sym->scopeid]->addSymbol(sym); // to allow recursion
+  SleighSymbol *res = sym.release();
+  symbollist[res->id] = res;	// Put the basic symbol in the table
+  table[res->scopeid]->addSymbol(res); // to allow recursion
 }
 
 void SymbolTable::purge(void)
