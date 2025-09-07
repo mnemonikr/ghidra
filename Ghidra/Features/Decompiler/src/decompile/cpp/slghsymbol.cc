@@ -945,7 +945,9 @@ void OperandSymbol::defineOperand(TripleSymbol *tri)
 OperandSymbol::~OperandSymbol(void)
 
 {
-  PatternExpression::release(localexp);
+  if (localexp != (PatternExpression *)0)
+    PatternExpression::release(localexp);
+
   if (defexp != (PatternExpression *)0)
     PatternExpression::release(defexp);
 }
