@@ -186,16 +186,23 @@ void SymbolTable::decode(Decoder &decoder,SleighBase *trans)
   for(int4 i=0;i<symbollist.size();++i)
     decodeSymbolHeader(decoder);
 				// Now decode the symbol content
+  vector<bool> decodedSymbols(symbollist.size());
   while(decoder.peekElement() != 0) {
     decoder.openElement();
     uintm id = decoder.readUnsignedInteger(sla::ATTRIB_ID);
     SleighSymbol *sym;
     sym = findSymbol(id);
     sym->decode(decoder,trans);
+    decodedSymbols[id] = true;
     // Tag closed by decode method
     // decoder.closeElement(subel);
   }
   decoder.closeElement(el);
+  for(int4 i=0;i<symbollist.size();++i) {
+    if (!decodedSymbols[i]) {
+      throw DecoderError("Symbol " + std::to_string(i) + " not decoded");
+    }
+  }
 }
 
 void SymbolTable::decodeSymbolHeader(Decoder &decoder)
