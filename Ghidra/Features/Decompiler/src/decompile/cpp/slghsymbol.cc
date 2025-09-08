@@ -1963,6 +1963,9 @@ void SubtableSymbol::decode(Decoder &decoder,SleighBase *trans)
       ct->decode(decoder,trans);
     }
     else if (subel == sla::ELEM_DECISION) {
+      if (decisiontree)
+        throw DecoderError("Already decoded decisiontree");
+
       decisiontree = new DecisionNode();
       decisiontree->decode(decoder,(DecisionNode *)0,this);
     }
