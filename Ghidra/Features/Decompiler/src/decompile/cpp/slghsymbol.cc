@@ -1191,6 +1191,8 @@ void StartSymbol::decode(Decoder &decoder,SleighBase *trans)
 
 {
   const_space = trans->getConstantSpace();
+  if (patexp)
+    throw DecoderError("Already decoded symbol");
   patexp = new StartInstructionValue();
   patexp->layClaim();
   decoder.closeElement(sla::ELEM_START_SYM.getId());
