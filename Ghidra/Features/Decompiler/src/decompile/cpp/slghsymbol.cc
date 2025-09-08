@@ -704,6 +704,9 @@ void NameSymbol::encodeHeader(Encoder &encoder) const
 void NameSymbol::decode(Decoder &decoder,SleighBase *trans)
 
 {
+  if (patval)
+    throw DecoderError("Already decoded symbol");
+
   patval = (PatternValue *) PatternExpression::decodeExpression(decoder,trans);
   patval->layClaim();
   while(decoder.peekElement() != 0) {
