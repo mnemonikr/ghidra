@@ -234,6 +234,9 @@ void SymbolTable::decodeSymbolHeader(Decoder &decoder)
     throw SleighError("Bad symbol xml");
 
   sym->decodeHeader(decoder);	// Restore basic elements of symbol
+  if (symbollist[sym->id] != (SleighSymbol *)0) {
+    throw SleighError("Bad symbol id: not unique");
+  }
   SleighSymbol *res = sym.release();
   symbollist[res->id] = res;	// Put the basic symbol in the table
   table[res->scopeid]->addSymbol(res); // to allow recursion
