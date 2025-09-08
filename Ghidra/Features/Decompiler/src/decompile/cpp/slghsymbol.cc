@@ -1324,6 +1324,8 @@ void Next2Symbol::encodeHeader(Encoder &encoder) const
 void Next2Symbol::decode(Decoder &decoder,SleighBase *trans)
 
 {
+  if (patexp)
+    throw DecoderError("Already decoded symbol");
   const_space = trans->getConstantSpace();
   patexp = new Next2InstructionValue();
   patexp->layClaim();
