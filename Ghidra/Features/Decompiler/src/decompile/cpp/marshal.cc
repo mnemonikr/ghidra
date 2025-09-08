@@ -1005,7 +1005,7 @@ AddrSpace *PackedDecode::readSpace(void)
     getNextByte(curPos);
   uint1 typeByte = getNextByte(curPos);
   uint4 typeCode = typeByte >> TYPECODE_SHIFT;
-  int4 res;
+  uint4 res;
   AddrSpace *spc;
   if (typeCode == TYPECODE_ADDRESSSPACE) {
     res = readInteger(readLengthCode(typeByte));
