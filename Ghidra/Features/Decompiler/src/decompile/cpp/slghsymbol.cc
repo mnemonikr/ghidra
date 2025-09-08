@@ -254,6 +254,10 @@ void SymbolTable::decodeSymbolHeader(Decoder &decoder)
     throw SleighError("Bad symbol id: not unique");
   }
 
+  if (sym->scopeid >= table.size()) {
+    throw SleighError("Bad symbol scope id: too large");
+  }
+
   if (table[sym->scopeid] == (SymbolScope *)0) {
     throw SleighError("Bad symbol scope id: undefined");
   }
