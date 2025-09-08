@@ -185,6 +185,10 @@ void SymbolTable::decode(Decoder &decoder,SleighBase *trans)
     }
 
     SymbolScope *parscope = (parent==id) ? (SymbolScope *)0 : table[parent];
+    if (table[id]) {
+      throw SleighError("Bad symbol scope parent id: not unique");
+    }
+
     table[id] = new SymbolScope( parscope, id );
     decoder.closeElement(subel);
   }
