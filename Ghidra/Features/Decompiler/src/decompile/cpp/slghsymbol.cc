@@ -237,6 +237,11 @@ void SymbolTable::decodeSymbolHeader(Decoder &decoder)
   if (symbollist[sym->id] != (SleighSymbol *)0) {
     throw SleighError("Bad symbol id: not unique");
   }
+
+  if (table[sym->scopeid] == (SymbolScope *)0) {
+    throw SleighError("Bad symbol scope id: undefined");
+  }
+
   SleighSymbol *res = sym.release();
   symbollist[res->id] = res;	// Put the basic symbol in the table
   table[res->scopeid]->addSymbol(res); // to allow recursion
