@@ -1257,6 +1257,8 @@ void EndSymbol::encodeHeader(Encoder &encoder) const
 void EndSymbol::decode(Decoder &decoder,SleighBase *trans)
 
 {
+  if (patexp)
+    throw DecoderError("Already decoded symbol");
   const_space = trans->getConstantSpace();
   patexp = new EndInstructionValue();
   patexp->layClaim();
