@@ -241,6 +241,11 @@ void SymbolTable::decodeSymbolHeader(Decoder &decoder)
     throw SleighError("Bad symbol xml");
 
   sym->decodeHeader(decoder);	// Restore basic elements of symbol
+
+  if (sym->id >= symbollist.size()) {
+    throw SleighError("Bad symbol id: exceeds symbollist size");
+  }
+
   if (symbollist[sym->id] != (SleighSymbol *)0) {
     throw SleighError("Bad symbol id: not unique");
   }
