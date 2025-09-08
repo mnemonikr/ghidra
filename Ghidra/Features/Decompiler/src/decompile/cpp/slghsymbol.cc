@@ -175,6 +175,10 @@ void SymbolTable::decode(Decoder &decoder,SleighBase *trans)
   for(int4 i=0;i<table.size();++i) { // Decode the scopes
     int4 subel = decoder.openElement(sla::ELEM_SCOPE);
     uintm id = decoder.readUnsignedInteger(sla::ATTRIB_ID);
+    if (id >= table.size()) {
+      throw SleighError("Bad symbol scope id: exceeds symbol scope table size");
+    }
+
     uintm parent = decoder.readUnsignedInteger(sla::ATTRIB_PARENT);
     SymbolScope *parscope = (parent==id) ? (SymbolScope *)0 : table[parent];
     table[id] = new SymbolScope( parscope, id );
