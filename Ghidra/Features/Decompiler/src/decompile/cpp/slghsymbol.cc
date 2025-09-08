@@ -180,6 +180,10 @@ void SymbolTable::decode(Decoder &decoder,SleighBase *trans)
     }
 
     uintm parent = decoder.readUnsignedInteger(sla::ATTRIB_PARENT);
+    if (parent >= table.size()) {
+      throw SleighError("Bad symbol scope parent id: exceeds symbol scope table size");
+    }
+
     SymbolScope *parscope = (parent==id) ? (SymbolScope *)0 : table[parent];
     table[id] = new SymbolScope( parscope, id );
     decoder.closeElement(subel);
