@@ -2484,6 +2484,8 @@ void ContextOp::encode(Encoder &encoder) const
 void ContextOp::decode(Decoder &decoder,SleighBase *trans)
 
 {
+  if (patexp)
+    throw DecoderError("Already decoded symbol");
   uint4 el = decoder.openElement(sla::ELEM_CONTEXT_OP);
   num = decoder.readSignedInteger(sla::ATTRIB_I);
   shift = decoder.readSignedInteger(sla::ATTRIB_SHIFT);
