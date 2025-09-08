@@ -1072,6 +1072,9 @@ void OperandSymbol::encodeHeader(Encoder &encoder) const
 void OperandSymbol::decode(Decoder &decoder,SleighBase *trans)
 
 {
+  if (defexp || localexp)
+    throw DecoderError("Already decoded symbol");
+
   defexp = (PatternExpression *)0;
   triple = (TripleSymbol *)0;
   flags = 0;
