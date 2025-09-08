@@ -841,6 +841,10 @@ void ContextSymbol::decode(Decoder &decoder,SleighBase *trans)
   if (lowMissing || highMissing) {
     throw DecoderError("Missing high/low attributes");
   }
+
+  if (patval)
+    throw DecoderError("Already decoded symbol");
+
   patval = (PatternValue *) PatternExpression::decodeExpression(decoder,trans);
   patval->layClaim();
   decoder.closeElement(sla::ELEM_CONTEXT_SYM.getId());
