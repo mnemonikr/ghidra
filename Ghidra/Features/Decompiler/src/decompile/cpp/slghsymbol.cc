@@ -538,6 +538,9 @@ void ValueSymbol::encodeHeader(Encoder &encoder) const
 void ValueSymbol::decode(Decoder &decoder,SleighBase *trans)
 
 {
+  if (patval)
+    throw DecoderError("Already decoded symbol");
+
   patval = (PatternValue *) PatternExpression::decodeExpression(decoder,trans);
   patval->layClaim();
   decoder.closeElement(sla::ELEM_VALUE_SYM.getId());
