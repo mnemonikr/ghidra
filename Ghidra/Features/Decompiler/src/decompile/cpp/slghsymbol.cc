@@ -171,6 +171,10 @@ void SymbolTable::decode(Decoder &decoder,SleighBase *trans)
 {
   int4 el = decoder.openElement(sla::ELEM_SYMBOL_TABLE);
   table.resize(decoder.readSignedInteger(sla::ATTRIB_SCOPESIZE), (SymbolScope *)0);
+  if (table.size() == 0) {
+    throw SleighError("Global symbol scope is required");
+  }
+
   symbollist.resize(decoder.readSignedInteger(sla::ATTRIB_SYMBOLSIZE), (SleighSymbol *)0);
   for(int4 i=0;i<table.size();++i) { // Decode the scopes
     int4 subel = decoder.openElement(sla::ELEM_SCOPE);
